@@ -1,6 +1,6 @@
 'use client'
 
-import { Zap } from 'lucide-react'
+import { Brand, NavTabs, UserMenu } from '@/components/app-nav'
 import type { Meter } from '@/lib/api'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { NotificationsPopover } from './notifications-popover'
@@ -18,11 +18,9 @@ export function SiteHeader({ meters, meter, onSelectMeter }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
-        <div className="flex items-center gap-2">
-          <span className="flex size-7 items-center justify-center rounded-md bg-accent text-accent-foreground">
-            <Zap className="size-4" aria-hidden />
-          </span>
-          <span className="font-semibold tracking-tight">Wattline</span>
+        <div className="flex items-center gap-4 md:gap-6">
+          <Brand />
+          <NavTabs />
         </div>
 
         <div className="flex items-center gap-2">
@@ -48,6 +46,7 @@ export function SiteHeader({ meters, meter, onSelectMeter }: SiteHeaderProps) {
           ) : null}
           <NotificationsPopover />
           {meter && <SettingsSheet key={meter.id} meter={meter} />}
+          <UserMenu />
         </div>
       </div>
     </header>

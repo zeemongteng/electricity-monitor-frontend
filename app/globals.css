@@ -87,6 +87,43 @@
   --sidebar-ring: oklch(0.4 0.1 252);
 }
 
+.wl-pin {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--card);
+  border-radius: 50% 50% 50% 0;
+  background: var(--primary);
+  box-shadow: 0 2px 6px oklch(0 0 0 / 0.3);
+  transform: rotate(-45deg);
+}
+.wl-pin > span {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+.wl-pin--selected {
+  background: var(--foreground);
+  transform: rotate(-45deg) scale(1.2);
+}
+.wl-pin--draft {
+  background: var(--accent);
+}
+.wl-pin--draft > span {
+  background: var(--foreground);
+}
+.wl-add-mode,
+.wl-add-mode .leaflet-interactive {
+  cursor: crosshair;
+}
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--secondary);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
