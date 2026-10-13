@@ -1,4 +1,7 @@
-export const LOCATION_TYPES = ['dorm', 'apartment', 'condo', 'house'] as const
+// Internal type for the hidden location that holds demo meters; not selectable by admins.
+export const DEMO_LOCATION_TYPE = 'demo'
+
+export const LOCATION_TYPES =['dorm', 'apartment', 'condo', 'house'] as const
 export type LocationType = (typeof LOCATION_TYPES)[number]
 
 export const LOCATION_TYPE_LABEL: Record<LocationType, string> = {

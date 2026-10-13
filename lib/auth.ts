@@ -1,4 +1,5 @@
 import { betterAuth } from 'better-auth'
+import { after } from 'next/server'
 import { pool } from '@/lib/db'
 
 export const auth = betterAuth({
@@ -38,6 +39,20 @@ export const auth = betterAuth({
             'SELECT COUNT(*)::int AS count FROM "user"',
           )
           return { data: { ...newUser, role: rows[0].count === 0 ? 'admin' : 'user' } }
+        },
+        // New residents get a demo meter to try the dashboard before activating a real one.
+        after: async (createdUser) => {
+          if (createdUser.role === 'admin') return
+          const { provisionDemoMeter } = await import('@/lib/demo-meter')
+          const task = provisionDemoMeter(createdUser.id).catch((error) => {
+            console.error('[auth] Failed to provision demo meter', error)
+          })
+          // The backend can take ~60s to wake, so don't hold up sign-up on it.
+          try {
+            after(task)
+          } catch {
+            await task
+          }
         },
       },
     },
