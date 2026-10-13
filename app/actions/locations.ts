@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { locations } from '@/lib/db/schema'
+import { devices, locations } from '@/lib/db/schema'
 import { LOCATION_TYPES, type LocationType } from '@/lib/location-types'
 
 type ActionResult = { ok: true } | { ok: false; error: string }
@@ -77,6 +77,7 @@ export async function deleteLocation(id: number): Promise<ActionResult> {
   }
   if (!Number.isInteger(id)) return { ok: false, error: 'Invalid location.' }
 
+  await db.delete(devices).where(eq(devices.locationId, id))
   await db.delete(locations).where(eq(locations.id, id))
   revalidatePath('/map')
   return { ok: true }

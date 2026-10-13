@@ -1,8 +1,9 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
-import { ArrowLeft, CheckCircle2, Trash2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle2, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { deleteLocation } from '@/app/actions/locations'
 import {
@@ -18,15 +19,17 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { typeLabel } from '@/lib/location-types'
+import { DevicesManager } from './devices-manager'
 import type { MapLocation } from './types'
 
 interface LocationDetailProps {
   location: MapLocation
   isAdmin: boolean
+  isSignedIn: boolean
   onBack: () => void
 }
 
-export function LocationDetail({ location, isAdmin, onBack }: LocationDetailProps) {
+export function LocationDetail({ location, isAdmin, isSignedIn, onBack }: LocationDetailProps) {
   const router = useRouter()
   const [pending, startTransition] = useTransition()
 
@@ -93,6 +96,22 @@ export function LocationDetail({ location, isAdmin, onBack }: LocationDetailProp
             <p className="text-sm leading-relaxed text-pretty">{location.notes}</p>
           </div>
         )}
+
+        {isAdmin ? (
+          <DevicesManager locationId={location.id} />
+        ) : (
+          <div className="flex flex-col gap-3 rounded-md border p-4">
+            <h3 className="text-sm font-semibold">Live here?</h3>
+            <p className="text-sm leading-relaxed text-pretty text-muted-foreground">
+              Ask the dorm owner for your room&apos;s device ID and password, then link it to your account to see
+              your own usage and bill.
+            </p>
+            <Button render={<Link href={isSignedIn ? '/' : '/sign-up'} />} nativeButton={false}>
+              {isSignedIn ? 'Activate my meter' : 'Create an account'}
+              <ArrowRight data-icon="inline-end" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {isAdmin && (
@@ -106,7 +125,7 @@ export function LocationDetail({ location, isAdmin, onBack }: LocationDetailProp
               <AlertDialogHeader>
                 <AlertDialogTitle>Remove {location.name}?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  The pin will disappear from the coverage map for everyone.
+                  The pin and its room devices will be removed, and residents will lose access to those meters.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

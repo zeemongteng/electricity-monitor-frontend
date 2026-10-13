@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useMeters } from '@/lib/hooks'
+import { ActivateMeterPanel } from './activate-meter'
 import { AlertWatcher } from './alert-watcher'
 import { BackendStatus } from './backend-status'
 import { BillCalculator } from './bill-calculator'
@@ -12,7 +13,7 @@ import { SimulatorPanel } from './simulator-panel'
 import { UsageChart } from './usage-chart'
 import { UsageStats } from './usage-stats'
 
-export function Dashboard() {
+export function Dashboard({ isAdmin }: { isAdmin: boolean }) {
   const { data: meters, error, isLoading } = useMeters()
   const [selectedId, setSelectedId] = useState<number | null>(null)
 
@@ -27,7 +28,7 @@ export function Dashboard() {
         {error && !meters ? (
           <BackendStatus error={error} />
         ) : !isLoading && meters && meters.length === 0 ? (
-          <BackendStatus empty />
+          isAdmin ? <BackendStatus empty /> : <ActivateMeterPanel onActivated={setSelectedId} />
         ) : (
           <>
             <section aria-label="Live meter" className="grid gap-6 lg:grid-cols-12">
@@ -46,7 +47,7 @@ export function Dashboard() {
                 <BillCalculator meterId={meterId} defaultRate={meter?.ratePerKwh ?? 4} />
               </div>
               <div className="lg:col-span-5">
-                <SimulatorPanel meterId={meterId} />
+                <SimulatorPanel meterId={meterId} isAdmin={isAdmin} />
               </div>
             </section>
 

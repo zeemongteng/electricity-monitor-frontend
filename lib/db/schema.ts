@@ -67,3 +67,18 @@ export const locations = pgTable('locations', {
 })
 
 export type Location = typeof locations.$inferSelect
+
+export const devices = pgTable('devices', {
+  id: serial('id').primaryKey(),
+  code: text('code').notNull().unique(),
+  passwordHash: text('passwordHash').notNull(),
+  meterId: integer('meterId').notNull().unique(),
+  locationId: integer('locationId').notNull(),
+  room: text('room').notNull(),
+  claimedBy: text('claimedBy'),
+  claimedAt: timestamp('claimedAt'),
+  createdBy: text('createdBy').notNull(),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+})
+
+export type Device = typeof devices.$inferSelect

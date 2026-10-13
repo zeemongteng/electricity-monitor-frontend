@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { getLocations } from '@/app/actions/locations'
 import { CoverageMap } from '@/components/map/coverage-map'
 import { Brand, NavTabs, UserMenu } from '@/components/app-nav'
@@ -13,8 +12,6 @@ export const metadata: Metadata = {
 
 export default async function MapPage() {
   const session = await auth.api.getSession({ headers: await headers() })
-  if (!session?.user) redirect('/sign-in?next=/map')
-
   const locations = await getLocations()
 
   return (
@@ -30,7 +27,8 @@ export default async function MapPage() {
       </header>
       <CoverageMap
         locations={locations.map((l) => ({ ...l, createdAt: l.createdAt.toISOString(), updatedAt: l.updatedAt.toISOString() }))}
-        isAdmin={session.user.role === 'admin'}
+        isAdmin={session?.user.role === 'admin'}
+        isSignedIn={Boolean(session?.user)}
       />
     </div>
   )

@@ -39,6 +39,6 @@ export function useNotifications() {
   return useSWR<AppNotification[]>('/api/notifications', fetcher, { refreshInterval: 5_000 })
 }
 
-export function useSimulator() {
-  return useSWR<SimulatorStatus>('/api/simulator', fetcher, { refreshInterval: 30_000 })
+export function useSimulator(enabled = true) {
+  return useSWR<SimulatorStatus>(enabled ? '/api/simulator' : null, fetcher, { refreshInterval: 30_000 })
 }

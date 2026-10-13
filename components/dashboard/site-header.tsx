@@ -3,6 +3,7 @@
 import { Brand, NavTabs, UserMenu } from '@/components/app-nav'
 import type { Meter } from '@/lib/api'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { AddMeterDialog } from './add-meter-dialog'
 import { NotificationsPopover } from './notifications-popover'
 import { SettingsSheet } from './settings-sheet'
 
@@ -44,6 +45,7 @@ export function SiteHeader({ meters, meter, onSelectMeter }: SiteHeaderProps) {
           ) : meter ? (
             <span className="hidden text-sm text-muted-foreground sm:inline">{meter.name}</span>
           ) : null}
+          {meters.length > 0 && <AddMeterDialog onActivated={onSelectMeter} />}
           <NotificationsPopover />
           {meter && <SettingsSheet key={meter.id} meter={meter} />}
           <UserMenu />

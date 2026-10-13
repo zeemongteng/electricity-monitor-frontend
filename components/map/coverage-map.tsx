@@ -19,9 +19,10 @@ const LeafletMap = dynamic(() => import('./leaflet-map'), {
 interface CoverageMapProps {
   locations: MapLocation[]
   isAdmin: boolean
+  isSignedIn: boolean
 }
 
-export function CoverageMap({ locations, isAdmin }: CoverageMapProps) {
+export function CoverageMap({ locations, isAdmin, isSignedIn }: CoverageMapProps) {
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [addMode, setAddMode] = useState(false)
@@ -55,7 +56,7 @@ export function CoverageMap({ locations, isAdmin }: CoverageMapProps) {
         {addMode ? (
           <AddLocationForm draft={draft} onDraftChange={setDraft} onDone={stopAdd} />
         ) : selected ? (
-          <LocationDetail location={selected} isAdmin={isAdmin} onBack={() => setSelectedId(null)} />
+          <LocationDetail location={selected} isAdmin={isAdmin} isSignedIn={isSignedIn} onBack={() => setSelectedId(null)} />
         ) : (
           <>
             <div className="flex flex-col gap-4 border-b p-4">

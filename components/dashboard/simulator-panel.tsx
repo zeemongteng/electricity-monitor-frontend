@@ -23,8 +23,8 @@ import { Switch } from '@/components/ui/switch'
 
 type Busy = null | 'auto' | 'manual' | 'history' | 'sample' | 'reset'
 
-export function SimulatorPanel({ meterId }: { meterId: number | null }) {
-  const { data: sim, mutate: mutateSim } = useSimulator()
+export function SimulatorPanel({ meterId, isAdmin }: { meterId: number | null; isAdmin: boolean }) {
+  const { data: sim, mutate: mutateSim } = useSimulator(isAdmin)
   const [busy, setBusy] = useState<Busy>(null)
   const [watts, setWatts] = useState('1500')
   const [seconds, setSeconds] = useState('3600')
@@ -54,6 +54,7 @@ export function SimulatorPanel({ meterId }: { meterId: number | null }) {
         <p className="text-sm leading-relaxed text-muted-foreground">Feed test readings into the meter.</p>
       </header>
 
+      {isAdmin && (
       <div className="flex items-center justify-between gap-4 border-b px-5 py-4">
         <div className="flex flex-col gap-0.5">
           <Label htmlFor="auto-sim">Auto readings</Label>
@@ -74,6 +75,7 @@ export function SimulatorPanel({ meterId }: { meterId: number | null }) {
           }
         />
       </div>
+      )}
 
       <form
         className="flex flex-col gap-3 border-b px-5 py-4"
@@ -157,6 +159,7 @@ export function SimulatorPanel({ meterId }: { meterId: number | null }) {
             Sample day
           </Button>
 
+          {isAdmin && (
           <AlertDialog>
             <AlertDialogTrigger render={<Button variant="destructive" size="sm" disabled={busy !== null} />}>
               <RotateCcw data-icon="inline-start" />
@@ -178,6 +181,7 @@ export function SimulatorPanel({ meterId }: { meterId: number | null }) {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          )}
         </div>
       </div>
     </section>

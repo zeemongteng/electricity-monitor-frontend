@@ -14,7 +14,7 @@ export function BackendStatus({ error, empty }: { error?: unknown; empty?: boole
   if (empty) {
     icon = <PlugZap className="size-6" aria-hidden />
     title = 'No meters yet'
-    body = 'The backend is connected but has no meters. Create one with POST /api/meters, then refresh.'
+    body = 'Add a building on the coverage map, then add a device for each room to create its meter.'
   } else if (notConfigured) {
     icon = <PlugZap className="size-6" aria-hidden />
     title = 'Connect your backend'
