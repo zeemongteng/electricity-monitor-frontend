@@ -22,6 +22,11 @@ export const auth = betterAuth({
         defaultValue: 'user',
         input: false,
       },
+      onboardedAt: {
+        type: 'date',
+        required: false,
+        input: false,
+      },
     },
   },
   databaseHooks: {

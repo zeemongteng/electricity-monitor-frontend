@@ -120,6 +120,9 @@
   cursor: crosshair;
 }
 .leaflet-container {
+  /* Keep Leaflet's z-index 400–1000 panes from rising above dialogs and sheets. */
+  isolation: isolate;
+  z-index: 0;
   font-family: var(--font-sans);
   background: var(--secondary);
 }
