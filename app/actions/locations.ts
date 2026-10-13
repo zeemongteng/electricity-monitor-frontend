@@ -1,12 +1,12 @@
 'use server'
 
-import { asc, eq } from 'drizzle-orm'
+import { asc, eq, ne } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { devices, locations } from '@/lib/db/schema'
-import { LOCATION_TYPES, type LocationType } from '@/lib/location-types'
+import { DEMO_LOCATION_TYPE, LOCATION_TYPES, type LocationType } from '@/lib/location-types'
 
 type ActionResult = { ok: true } | { ok: false; error: string }
 
@@ -18,7 +18,7 @@ async function requireAdmin() {
 }
 
 export async function getLocations() {
-  return db.select().from(locations).orderBy(asc(locations.name))
+  return db.select().from(locations).where(ne(locations.type, DEMO_LOCATION_TYPE)).orderBy(asc(locations.name))
 }
 
 export interface LocationInput {
