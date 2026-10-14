@@ -32,7 +32,7 @@ async function getDemoLocationId() {
 }
 
 /** Gives a user one pre-activated demo meter. Safe to call more than once. */
-export async function provisionDemoMeter(userId: string) {
+export async function provisionDemoMeter(userId: string, userName: string) {
   const locationId = await getDemoLocationId()
 
   const [already] = await db
@@ -44,7 +44,7 @@ export async function provisionDemoMeter(userId: string) {
 
   const res = await backendFetch('/api/meters', {
     method: 'POST',
-    body: JSON.stringify({ name: 'Demo meter', location: 'Demo' }),
+    body: JSON.stringify({ name: `Demo meter for ${userName.trim() || 'new user'}`, location: 'Demo' }),
   })
   if (!res.ok) throw new Error(`Backend responded ${res.status}`)
   const { id: meterId } = (await res.json()) as { id: number }
