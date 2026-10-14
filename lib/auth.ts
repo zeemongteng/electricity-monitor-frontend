@@ -44,7 +44,7 @@ export const auth = betterAuth({
         after: async (createdUser) => {
           if (createdUser.role === 'admin') return
           const { provisionDemoMeter } = await import('@/lib/demo-meter')
-          const task = provisionDemoMeter(createdUser.id).catch((error) => {
+          const task = provisionDemoMeter(createdUser.id, createdUser.name).catch((error) => {
             console.error('[auth] Failed to provision demo meter', error)
           })
           // The backend can take ~60s to wake, so don't hold up sign-up on it.
